@@ -1,0 +1,69 @@
+
+<div class="container">
+  <h1>Task Management</h1>
+  <p class="subtitle">Create and manage your tasks</p>
+
+  <section class="card">
+    <h2>Create New Task</h2>
+
+    <form #taskForm="ngForm" (ngSubmit)="addTask()">
+
+      <label for="title">Title *</label>
+      <input
+        id="title"
+        name="title"
+        type="text"
+        [(ngModel)]="title"
+        required
+        maxlength="200"
+        placeholder="Enter task title"
+      />
+
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        name="description"
+        [(ngModel)]="description"
+        maxlength="2000"
+        rows="4"
+        placeholder="Enter optional description"
+      ></textarea>
+
+      <button
+        type="submit"
+        [disabled]="taskForm.invalid || !title.trim() || submitting">
+        {{ submitting ? 'Saving...' : 'Add Task' }}
+      </button>
+    </form>
+
+    <p class="success" *ngIf="successMessage">
+      {{ successMessage }}
+    </p>
+
+    <p class="error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </p>
+  </section>
+
+  <section class="task-section">
+    <h2>Created Tasks ({{ tasks.length }})</h2>
+
+    <p *ngIf="loading">Loading tasks...</p>
+
+    <p *ngIf="!loading && tasks.length === 0">
+      No tasks created yet.
+    </p>
+
+    <article class="task-card" *ngFor="let task of tasks">
+      <h3>{{ task.title }}</h3>
+
+      <p *ngIf="task.description">
+        {{ task.description }}
+      </p>
+
+      <small>Task ID: {{ task.id }}</small>
+      <br />
+      <small>Created: {{ task.createdAt | date:'medium' }}</small>
+    </article>
+  </section>
+</div>
